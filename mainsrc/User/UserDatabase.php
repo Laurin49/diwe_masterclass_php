@@ -1,18 +1,24 @@
 <?php
 namespace App\User;
+use App\App\AbstractMVC\AbstractDatabase;
+use App\User\MVC\UserModel;
 use PDO;
 
-class UserDatabase {
+class UserDatabase extends AbstractDatabase {
 
-    private $pdo;
 
-    public function __construct(PDO $pdo)
+    function getTable()
     {
-        $this->pdo = $pdo;
+        return "users";
+    }
+
+    function getModel()
+    {
+        return UserModel::class;
     }
 
     public function newUser() {
-        $table = "users";
+        $table = $this->getTable();
         if (!empty($this->pdo)) {
             $sql = "INSERT INTO " . $table . " (firstname, lastname, username, mail, password, bio)";
             $sql .= " VALUES (:firstname, :lastname, :username, :mail, :password, :bio)";
@@ -29,7 +35,7 @@ class UserDatabase {
     }
 
     public function new2User() {
-        $table = "users";
+        $table = $this->getTable();
         if (!empty($this->pdo)) {
             $sql = "INSERT INTO ". $table . "(userid, firstname, lastname, username, mail, password, bio)";
             $sql .= " VALUES (NULL, 'Robert', 'Glatzel', 'glatzel09', 'glatzel@hsv.de', 'glatzel12345', 'Stürmer')";
@@ -39,7 +45,7 @@ class UserDatabase {
     }
 
     public function deleteUser($id) {
-        $table = "users";
+        $table = $this->getTable();
         if (!empty($this->pdo)) {
             $sql = "DELETE FROM ". $table . " WHERE userid = :userid";
             $stmt = $this->pdo->query($sql);
@@ -51,7 +57,7 @@ class UserDatabase {
     }
 
     public function updateUser($username, $password) {
-        $table = "users";
+        $table = $this->getTable();
         if (!empty($this->pdo)) {
             $sql = "UPDATE ". $table . " SET username = :username, password = :password";
             $sql .= " WHERE lastname = 'Glatzel'";
@@ -63,26 +69,31 @@ class UserDatabase {
     }
 
     public function getUsers() {
-        $table = "users";
+        $table = $this->getTable();
+        $model = $this->getModel();
         if (!empty($this->pdo)) {
             $sql = "SELECT * FROM ". $table . " ORDER BY userid";
             $stmt = $this->pdo->query($sql);
             $stmt->execute();
-            return $stmt->fetchAll();
+            $stmt->setFetchMode(PDO::FETCH_CLASS, $model);
+            return $stmt->fetchAll(PDO::FETCH_CLASS);
         }
     }
 
     public function getUser($id) {
-        $table = "users";
+        $table = $this->getTable();
+        $model = $this->getModel();
         if (!empty($this->pdo)) {
             $sql = "SELECT * FROM ". $table . " WHERE userid = :userid";
             if ($stmt = $this->pdo->prepare($sql)) {
                 $stmt->bindParam(":userid", $id);
                 $stmt->execute();
-                return $stmt->fetch();
+                $stmt->setFetchMode(PDO::FETCH_CLASS, $model);
+                return $stmt->fetch(PDO::FETCH_CLASS);
             } else {
                 echo "Kein User mit der ID: $id gefunden !";
             }
         }
     }
+
 }

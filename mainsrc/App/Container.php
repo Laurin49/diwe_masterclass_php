@@ -1,6 +1,7 @@
 <?php
 namespace App\App;
 use App\Connections\ConMySQL;
+use App\User\MVC\UserController;
 use App\User\UserDatabase;
 
 class Container {
@@ -10,6 +11,9 @@ class Container {
     public function __construct()
     {
         $this->builds = [
+            'userController' => function() {
+                return new UserController($this->build('userDatabase'));
+            },
             'userDatabase' => function() {
                 return new UserDatabase($this->build('pdo'));
             },

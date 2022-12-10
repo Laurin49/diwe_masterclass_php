@@ -18,6 +18,9 @@ elseif ($request == "/Users") {
 elseif ($request == "/Users=user"){
     $router->add("userController", "userprofile");
 }
+elseif ($request == "/Register"){
+    $router->add("registerController", "register");
+}
 else {
     $router->add("errorController", "errorPage");
 }

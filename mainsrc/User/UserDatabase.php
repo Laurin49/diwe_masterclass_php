@@ -17,19 +17,19 @@ class UserDatabase extends AbstractDatabase {
         return UserModel::class;
     }
 
-    public function newUser() {
+    public function newUser($firstname, $lastname, $username, $mail, $password) {
         $table = $this->getTable();
         if (!empty($this->pdo)) {
             $sql = "INSERT INTO " . $table . " (firstname, lastname, username, mail, password, bio)";
             $sql .= " VALUES (:firstname, :lastname, :username, :mail, :password, :bio)";
-            $stmt = $this->pdo->query($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
-                ':firstname' => "Laslo",
-                ':lastname' => "Benes",
-                ":username" => "lbenes",
-                ":mail" => "benes@hsv.de",
-                ":password" => "benes12345",
-                ":bio" => "Mittelfeld links"
+                ':firstname' => $firstname,
+                ':lastname' => $lastname,
+                ":username" => $username,
+                ":mail" => $mail,
+                ":password" => $password,
+                ":bio" => ""
             ]);
         }
     }
@@ -96,4 +96,17 @@ class UserDatabase extends AbstractDatabase {
         }
     }
 
+    public function getUserByEmail($mail) {
+        $table = $this->getTable();
+        $model = $this->getModel();
+        if (!empty($this->pdo)) {
+            $sql = "SELECT * FROM ". $table . " WHERE mail = :mail";
+            if ($stmt = $this->pdo->prepare($sql)) {
+                $stmt->bindParam(":mail", $mail);
+                $stmt->execute();
+                $stmt->setFetchMode(PDO::FETCH_CLASS, $model);
+                return $stmt->fetch(PDO::FETCH_CLASS);
+            }
+        }
+    }
 }

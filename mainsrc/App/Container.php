@@ -4,6 +4,8 @@ use App\Connections\ConMySQL;
 use App\Error\MVC\ErrorController;
 use App\Home\IndexDatabase;
 use App\Home\MVC\IndexController;
+use App\Register\MVC\RegisterController;
+use App\Register\RegisterDatabase;
 use App\User\MVC\UserController;
 use App\User\UserDatabase;
 
@@ -28,6 +30,9 @@ class Container {
             },
             'indexDatabase' => function() {
                 return new IndexDatabase($this->build('pdo'));
+            },
+            'registerController' => function() {
+                return new RegisterController($this->build('userDatabase'));
             },
             'userController' => function() {
                 return new UserController($this->build('userDatabase'));

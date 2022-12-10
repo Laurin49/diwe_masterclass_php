@@ -1,6 +1,8 @@
-<?php
-echo "<h3>Dies ist die Startseite</h3>";
-?>
+<?php require_once __DIR__ . "/../../../App/Design/header.php"; ?>
+
 <br />
-<br />
-<a href="Users"><button>Zu den Users</button></a>
+<p><a href="Users"><button class="btn btn-primary">Zu den Users</button></a></p>
+<p><a href="Login"><button class="btn btn-secondary">Login</button></a></p>
+<p><a href="Register"><button class="btn btn-warning">Register</button></a></p>
+
+<?php require_once __DIR__ . "/../../../App/Design/footer.php"; ?>

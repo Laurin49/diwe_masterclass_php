@@ -13,6 +13,15 @@ class LoginAuth {
         $user = $this->userDatabase->getUser("", $mail);
         if ($user) {
             if (password_verify($password, $user->password)) {
+                $user = $this->userDatabase->getUser("", $mail);
+
+                // Generiert bei jedem erfolgreichen Login eine neue Session ID,
+                // behebt Problem Session Hacking, Sitzungsfixierung
+                session_regenerate_id(true);
+
+                $_SESSION['userid'] = $user->userid;
+                $_SESSION['username'] = $user->username;
+                $_SESSION['login'] = true;
                 return true;
             } else {
                 return false;

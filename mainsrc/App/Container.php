@@ -6,10 +6,12 @@ use App\Home\IndexDatabase;
 use App\Home\MVC\IndexController;
 use App\Login\MVC\LoginAuth;
 use App\Login\MVC\LoginController;
+use App\Logout\MVC\LogoutController;
 use App\Register\MVC\RegisterController;
 use App\Register\RegisterDatabase;
 use App\User\MVC\UserController;
 use App\User\UserDatabase;
+use App\UserDashboard\MVC\UserDashboardController;
 
 class Container {
     private $classInstances = [];
@@ -27,6 +29,9 @@ class Container {
             'errorController' => function() {
                 return new ErrorController();
             },
+            'userDashboardController' => function() {
+                return new UserDashboardController();
+            },
             'indexController' => function() {
                 return new IndexController($this->build('indexDatabase'));
             },
@@ -38,6 +43,9 @@ class Container {
             },
             'loginAuth' => function() {
                 return new LoginAuth($this->build('userDatabase'));
+            },
+            'logoutController' => function() {
+                return new LogoutController();
             },
             'registerController' => function() {
                 return new RegisterController($this->build('userDatabase'));

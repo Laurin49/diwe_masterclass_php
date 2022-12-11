@@ -18,14 +18,17 @@ class LoginController extends AbstractController {
             $password = $_POST["password"];
             $login = $this->loginAuth->checkLogin($mail, $password);
             if ($login) {
-                header("Location: Users");
+                header("Location: Dashboard");
             } else {
                 $error = "Login fehlgeschlagen.";
             }
         }
-
-        $this->pageLoad("Login", "login", [
-            "error" => $error
-        ]);
+        if (!empty($_SESSION['login'])) {
+            header("Location: Dashboard");
+        } else {
+            $this->pageLoad("Login", "login", [
+                "error" => $error
+            ]);
+        }
     }
 }

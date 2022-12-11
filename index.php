@@ -1,5 +1,9 @@
 <?php
+session_start();
+
 require_once "init.php";
+
+//session_destroy();
 
 if (isset($_SERVER["PATH_INFO"])){
     $request = $_SERVER["PATH_INFO"];
@@ -21,8 +25,17 @@ elseif ($request == "/Users=user"){
 elseif ($request == "/Register"){
     $router->add("registerController", "register");
 }
+# UserDashboard
+elseif ($request == "/Dashboard"){
+    $router->add("userDashboardController", "userDashboardMain");
+}
+#Login
 elseif ($request == "/Login") {
     $router->add("loginController", "login");
+}
+# Logout
+elseif ($request == "/Logout") {
+    $router->add("logoutController", "logout");
 }
 else {
     $router->add("errorController", "errorPage");

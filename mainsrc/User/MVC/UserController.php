@@ -21,7 +21,7 @@ class UserController extends AbstractController {
 
     public function userprofile() {
         $userid = $_GET["userid"];
-        $user = $this->userDatabase->getUser($userid);
+        $user = $this->userDatabase->getUser($userid, "");
         $this->pageLoad("User", "user", [
             "user" => $user
         ]);

@@ -80,13 +80,14 @@ class UserDatabase extends AbstractDatabase {
         }
     }
 
-    public function getUser($id) {
+    public function getUser($id, $mail) {
         $table = $this->getTable();
         $model = $this->getModel();
         if (!empty($this->pdo)) {
-            $sql = "SELECT * FROM ". $table . " WHERE userid = :userid";
+            $sql = "SELECT * FROM ". $table . " WHERE userid = :userid OR mail = :mail";
             if ($stmt = $this->pdo->prepare($sql)) {
                 $stmt->bindParam(":userid", $id);
+                $stmt->bindParam(":mail", $mail);
                 $stmt->execute();
                 $stmt->setFetchMode(PDO::FETCH_CLASS, $model);
                 return $stmt->fetch(PDO::FETCH_CLASS);

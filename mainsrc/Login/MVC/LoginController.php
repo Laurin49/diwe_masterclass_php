@@ -16,6 +16,11 @@ class LoginController extends AbstractController {
         if (!empty($_POST)) {
             $mail = $_POST["email"];
             $password = $_POST["password"];
+
+            if (!empty($_POST['stayin'])) {
+                $this->loginAuth->buildStayin($mail);
+            }
+
             $login = $this->loginAuth->checkLogin($mail, $password);
             if ($login) {
                 header("Location: Dashboard");
@@ -23,6 +28,10 @@ class LoginController extends AbstractController {
                 $error = "Login fehlgeschlagen.";
             }
         }
+        if (!isset($_SESSION['login'])) {
+            $this->loginAuth->checkStayin();
+        }
+
         if (!empty($_SESSION['login'])) {
             header("Location: Dashboard");
         } else {

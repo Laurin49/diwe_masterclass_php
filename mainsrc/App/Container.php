@@ -9,6 +9,7 @@ use App\Login\MVC\LoginController;
 use App\Logout\MVC\LogoutController;
 use App\Register\MVC\RegisterController;
 use App\Register\RegisterDatabase;
+use App\SecurityLogin\SecurityLoginDatabase;
 use App\User\MVC\UserController;
 use App\User\UserDatabase;
 use App\UserDashboard\MVC\UserDashboardController;
@@ -42,7 +43,10 @@ class Container {
                 return new LoginController($this->build('loginAuth'));
             },
             'loginAuth' => function() {
-                return new LoginAuth($this->build('userDatabase'));
+                return new LoginAuth(
+                    $this->build('userDatabase'),
+                    $this->build('securityLoginDatabase')
+                );
             },
             'logoutController' => function() {
                 return new LogoutController();
@@ -55,6 +59,9 @@ class Container {
             },
             'userDatabase' => function() {
                 return new UserDatabase($this->build('pdo'));
+            },
+            'securityLoginDatabase' => function() {
+                return new SecurityLoginDatabase($this->build('pdo'));
             },
             'pdo' => function() {
                 $connection = new ConMySQL();

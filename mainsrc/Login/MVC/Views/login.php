@@ -16,6 +16,10 @@
                     <input type="password" class="form-control" id="password" name="password" aria-describedby="passwordHelp">
                     <div id="passwordHelp" class="form-text">Gib dein Passwort an.</div>
                 </div>
+                <div class="mb-3">
+                    <input type="checkbox" class="form-check-input" id="stayin" name="stayin" value="checked">
+                    <label class="form-check-label" for="stayin">Check me out</label>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary" name="submit">Submit</button>
         </form>
